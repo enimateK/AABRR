@@ -10,8 +10,12 @@ public abstract class Arbre {
 	}
 	
 	public String Parcours(String valeur){
-		this.SAG.Parcours(valeur);
-		this.SAG.Parcours(valeur);
+		if (this.SAG != null){
+			this.SAG.Parcours(valeur);
+		}
+		if (this.SAD != null){
+			this.SAG.Parcours(valeur);
+		}		
 		return valeur;
 	}
 	public static void main(String[] args) {

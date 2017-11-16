@@ -22,7 +22,17 @@ public class AABRR extends Arbre {
 		this.SAD = new AABRR(m,M,racine);
 	}
 	
-	public ABRR 
+	public ABRR getAA(){
+		return this.AA;
+	}
+	
+	public String Parcours(String valeur){
+		valeur = valeur + this.min + ':' +  this.Max + ';' ;
+		AA.Parcours(valeur);
+		super.Parcours(valeur);
+		return valeur;
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
