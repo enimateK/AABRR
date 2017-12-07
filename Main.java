@@ -11,11 +11,6 @@ public class Main{
 		GrandArbre.CreerSAG(9, 22, 9);
 		GrandArbre.getAA().CreerSAG(62);
 		GrandArbre.getAA().CreerSAD(55);
-		String arbre = GrandArbre.Parcours(val);
-
-		AABRR Arbre = new AABRR(1, 1000, 500);
-		Arbre.RandomCreationD(2, 500, 1);
-		Arbre.RandomCreationG(2, 1000, 500);
 		val = GrandArbre.Parcours(val);
 		System.out.println(val);
 		System.out.println("Bye");
