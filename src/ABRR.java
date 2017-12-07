@@ -1,4 +1,3 @@
-
 public class ABRR extends Arbre{
 	private int racine;
 	private ABRR SAG;
@@ -29,12 +28,17 @@ public class ABRR extends Arbre{
 	}
 	
 	public String Parcours(String valeur){
-		if (this.SAG == null && this.SAD == null){
-			valeur = valeur + this.racine;	
-		}else{
 			valeur = valeur + this.racine + ':';
-		}
-		super.Parcours(valeur);
+			if (this.SAG != null) 
+			{
+				valeur = this.SAG.Parcours(valeur);
+			}
+			if (this.SAD != null) 
+			{
+				valeur = this.SAD.Parcours(valeur);
+			}
+		//}
+		//super.Parcours(valeur);
 		return valeur;
 	}
 	

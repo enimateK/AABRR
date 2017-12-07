@@ -11,7 +11,7 @@ public class Main{
 		GrandArbre.CreerSAG(9, 22, 9);
 		GrandArbre.getAA().CreerSAG(62);
 		GrandArbre.getAA().CreerSAD(55);
-		GrandArbre.Parcours(val);
+		val = GrandArbre.Parcours(val);
 		System.out.println(val);
 		System.out.println("Bye");
 	}

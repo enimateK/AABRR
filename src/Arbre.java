@@ -9,15 +9,16 @@ public abstract class Arbre {
 		this.SAD = null;
 	}
 	
-	public String Parcours(String valeur){
+	
+/*	public void Parcours(String valeur){
+		System.out.println("Passage dans Arbre");
 		if (this.SAG != null){
 			this.SAG.Parcours(valeur);
 		}
 		if (this.SAD != null){
 			this.SAG.Parcours(valeur);
-		}		
-		return valeur;
-	}
+		}
+	}*/
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
