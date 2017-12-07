@@ -18,6 +18,15 @@ public abstract class Arbre {
 		}		
 		return valeur;
 	}
+
+	public void RandomCreationG(int nbNoeuds, int max, int min) {
+
+	}
+
+	public void RandomCreationD(int nbNoeuds, int max, int min){
+
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
