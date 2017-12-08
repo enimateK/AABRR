@@ -28,6 +28,12 @@ public class ABRR extends Arbre{
 	}
 	
 	public String Parcours(String valeur){
+		if (this.SAG == null && this.SAD == null) 
+		{
+			valeur = valeur + this.racine;
+		}
+		else {
+			
 			valeur = valeur + this.racine + ':';
 			if (this.SAG != null) 
 			{
@@ -37,6 +43,7 @@ public class ABRR extends Arbre{
 			{
 				valeur = this.SAD.Parcours(valeur);
 			}
+		}
 		//}
 		//super.Parcours(valeur);
 		return valeur;

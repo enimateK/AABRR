@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.FileWriter;
 
 public class AABRR extends Arbre {
 	private int min; //minimum
@@ -34,7 +35,7 @@ public class AABRR extends Arbre {
 	public String Parcours(String valeur){
 		valeur = valeur + this.min + ':' +  this.Max + ';' ;
 		valeur = AA.Parcours(valeur);
-		valeur = valeur + "_";
+		valeur = valeur + System.getProperty("line.separator");
 		if (this.SAG != null)
 		{
 		valeur = this.SAG.Parcours(valeur);
@@ -47,13 +48,12 @@ public class AABRR extends Arbre {
 		return valeur;
 	}
 	
-	public void Save(String nomFichier)
+	public void Save(String nomFichier, String chemin)
 	{
 		String Parcours = "";
-		File f = new File("Arbre AABRR.txt");
 		try
 		{
-			java.io.File fichier = new java.io.File(nomFichier);
+			File fichier = new File(nomFichier);
 			fichier.createNewFile();
 		}
 		catch (IOException err1)
@@ -64,32 +64,38 @@ public class AABRR extends Arbre {
 		try
 		{
 		java.io.FileOutputStream Flux = new java.io.FileOutputStream(nomFichier); // Doit être utilisé dans un bloc TRY
+		FileWriter fw = new FileWriter(nomFichier);
+		Parcours = this.Parcours(Parcours);
+		fw.write(Parcours);
+		fw.close();
 		}
 		catch (FileNotFoundException err2)
 		{
 		System.out.println("Impossible de trouver le fichier");
 		System.out.println(err2);
 		}
-
-		Parcours = this.Parcours(Parcours);
-		Parcours.replace("_", System.getProperty("line.separator"));
-		Flux.close(); // Toujours dans un TRY
-		catch (IOException err3)
+		catch (IOException err3) 
 		{
+			System.out.println("Impossible d'écrire dans le fichier");
+			System.out.println(err3);
 		}
-		
 
+		System.out.println(Parcours);
+	    File source = new File(nomFichier);
+	    chemin = chemin + "/" + nomFichier;
+	    File destination = new File(chemin);
+	    source.renameTo(destination);
 	}
 	
 	public static void main(String[] args) {
 		AABRR GrandArbre = new AABRR(50 ,75, 60);
 		String val = "";
-
+		GrandArbre.getAA().CreerSAD(55);
 		GrandArbre.CreerSAD(78, 80, 80);
 		GrandArbre.CreerSAG(9, 22, 9);
+		GrandArbre.Save("Parcours.txt", "/home/bastien/eclipse-workspace/Arbre/src");
 		
 		//val = GrandArbre.Save();
-		System.out.println(val);
 
 	}
 
