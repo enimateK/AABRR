@@ -1,5 +1,3 @@
-import src.AABRR_RANDOM;
-import src.AABRR;
 import java.util.Scanner;
 
 public class Main{
@@ -18,19 +16,31 @@ public class Main{
 		System.out.println("7. Insertion d'un entier dans un AABRR");
 		System.out.println("8. ABR vers AABRR");
 		System.out.println("9. AABRR vers ABR");
+		System.out.println("Veuillez faire un choix");
 		Scanner scan = new Scanner(System.in);
-
-
-
-		AABRR_RANDOM Arbre = new AABRR_RANDOM();
-		Arbre.GenererAABRRAleatoire(5, 100);
-
-//		Arbre.RandomCreationD(1, 100, 50);
-//		AABRR Arbre = new AABRR(1, 1000, 500);
-//		AABRR SousArbre = new AABRR(1001, 1500, 1250);
-//		Arbre.InsererAABRR(Arbre, SousArbre);
-
-
+		String choice = scan.nextLine();
+		switch(choice) {
+			case "1":
+				break;
+			case "2":
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				break;
+			case "7":
+				break;
+			case "8":
+				break;
+			case "9":
+				break;
+			default:
+				break;
+		}
 	}
 
 }

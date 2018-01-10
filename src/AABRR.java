@@ -1,13 +1,11 @@
 package src;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 
 
-public class AABRR extends Arbre {
+public class AABRR {
 	private Integer min; //minimum
 	private Integer Max; // Maximum
 	private ABRR AA;
@@ -50,20 +48,46 @@ public class AABRR extends Arbre {
 	}
 
 	private AABRR SAD;
-	/**
-	 * @param args
-	 */
-	public AABRR(int m, int M, int racine){
+
+	public AABRR(Integer m, Integer M, Integer racine){
 		super();
 		this.min = m;
 		this.Max = M;
 		this.AA = new ABRR(racine);
-
 	}
 
 	public AABRR() {
 	}
-	
+
+	public AABRR(String chemin)
+	{
+		AABRR Arbre1 = new AABRR (null, null, null);
+		try
+		{
+			InputStream ips=new FileInputStream(chemin);
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String ligne, val="";
+			while((ligne=br.readLine()) != null)
+			{
+				if (this.min == null && this.Max == null && this.getAA() == null)
+				{
+					this.CreaLigne(ligne);
+				}
+				else {
+					Arbre1.CreaLigne(ligne);
+					this.insertAABRR(Arbre1);
+				}
+			}
+			br.close();
+		}
+
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+	}
+
+
 	public void CreerSAG(int m, int M, int racine){
 		this.SAG = new AABRR(m,M,racine);
 	}
@@ -75,23 +99,21 @@ public class AABRR extends Arbre {
 	public ABRR getAA(){
 		return this.AA;
 	}
-	
+
 	public String Parcours(String valeur){
 		valeur = valeur + this.min + ':' +  this.Max + ';' ;
 		valeur = AA.Parcours(valeur);
-		valeur = valeur + "_";
+		valeur = valeur + System.getProperty("line.separator");
 		if (this.SAG != null)
 		{
-		valeur = this.SAG.Parcours(valeur);
+			valeur = this.SAG.Parcours(valeur);
 		}
-		if (this.SAD != null) 
+		if (this.SAD != null)
 		{
-		valeur = this.SAD.Parcours(valeur);
+			valeur = this.SAD.Parcours(valeur);
 		}
-		//super.Parcours(valeur);
 		return valeur;
 	}
-
 	public AABRR InsererAABRR(AABRR arbre, AABRR sousArbre) {
 		if (arbre == null) {
 			arbre = sousArbre;
@@ -106,88 +128,138 @@ public class AABRR extends Arbre {
 		return arbre;
 	}
 
-	public void RandomCreationG(int nbNoeuds, int max, int min) {
-		System.out.println(this.AA.getRacine());
-		if (nbNoeuds > 0) {
-			int nombreAleatoire = min + (int) (Math.random() * ((max - min) + 1));
-			this.CreerSAG(min, max, nombreAleatoire);
-			this.SAG.RandomCreationG(nbNoeuds - 1, max, nombreAleatoire);
-			int nombreAleatoire2 = min + (int) (Math.random() * ((max - min) + 1));
-			this.CreerSAD(min, max, nombreAleatoire2);
-			this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, nombreAleatoire);
-		}
-	}
-
-	public void RandomCreationD(int nbNoeuds, int max, int min){
-		System.out.println(this.AA.getRacine());
-		if (nbNoeuds > 0) {
-			int nombreAleatoire = min + (int)(Math.random() * ((max - min) + 1));
-			this.CreerSAG(min, max, nombreAleatoire);
-			this.SAG.RandomCreationG(nbNoeuds - 1, max, nombreAleatoire);
-			int nombreAleatoire2 = min + (int)(Math.random() * ((max - min) + 1));
-			this.CreerSAD(min, max, nombreAleatoire2);
-			this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, 1);
-		}
-	}
-
 	private boolean checkAABRR(AABRR abr) {
 		//Teste si l'arbre est vide
 		if (abr == null)
 			return true;
 
 		//Teste si l'arbre ABR' de a est valide
-		if(!abr.AA.checkABRR(abr.min, abr.max))
+		if(!abr.AA.checkABRR(abr.AA, abr.min, abr.Max))
 			return false;
 
 		//Teste si les fils droit et gauche de a sont à la bonne place
-		if ((abr.SAG != null) && (abr.sag.getMin() > abr.getMin()))
+		if ((abr.SAG != null) && (abr.SAG.getMin() > abr.getMin()))
 			return false;
-		if ((abr.SAD != null) && (abr.sad.getMax() < abr.getMax()))
+		if ((abr.SAD != null) && (abr.SAD.getMax() < abr.getMax()))
 			return false;
 
 		//Teste si les intervalles des fils sont disjoints
-		if ((abr.sag != null) && (abr.sag.getMax() >= abr.getMin()))
+		if ((abr.SAG != null) && (abr.SAG.getMax() >= abr.getMin()))
 			return false;
-		if ((abr.sad != null) && (abr.sad.getMin() <= abr.getMax()))
+		if ((abr.SAD != null) && (abr.SAD.getMin() <= abr.getMax()))
 			return false;
 
-		return (checkAABRR(abr.sag) && checkAABRR(abr.sad));
+		return (checkAABRR(abr.SAG) && checkAABRR(abr.SAD));
 	}
-	
-//	public void Save(String nomFichier)
-//	{
-//		String Parcours = "";
-//		File f = new File("Arbre AABRR.txt");
-//		try
-//		{
-//			java.io.File fichier = new java.io.File(nomFichier);
-//			fichier.createNewFile();
-//		}
-//		catch (IOException err1)
-//		{
-//			System.out.println("Impossible de créer le fichier");
-//			System.out.println(err1);
-//		}
-//		try
-//		{
-//		java.io.FileOutputStream Flux = new java.io.FileOutputStream(nomFichier); // Doit être utilisé dans un bloc TRY
-//		}
-//		catch (FileNotFoundException err2)
-//		{
-//		System.out.println("Impossible de trouver le fichier");
-//		System.out.println(err2);
-//		}
-//
-//		Parcours = this.Parcours(Parcours);
-//		Parcours.replace("_", System.getProperty("line.separator"));
-//		Flux.close(); // Toujours dans un TRY
-//		catch (IOException err3)
-//		{
-//		}
-//
-//
-//	}
-	
+
+	public void Save(String nomFichier, String chemin)
+	{
+		String Parcours = "";
+		try
+		{
+			File fichier = new File(nomFichier);
+			fichier.createNewFile();
+		}
+		catch (IOException err1)
+		{
+			System.out.println("Impossible de créer le fichier");
+			System.out.println(err1);
+		}
+		try
+		{
+			java.io.FileOutputStream Flux = new java.io.FileOutputStream(nomFichier);
+			FileWriter fw = new FileWriter(nomFichier);
+			Parcours = this.Parcours(Parcours);
+			fw.write(Parcours);
+			fw.close();
+		}
+		catch (FileNotFoundException err2)
+		{
+			System.out.println("Impossible de trouver le fichier");
+			System.out.println(err2);
+		}
+		catch (IOException err3)
+		{
+			System.out.println("Impossible d'écrire dans le fichier");
+			System.out.println(err3);
+		}
+		File source = new File(nomFichier);
+		chemin = chemin + "/" + nomFichier;
+		File destination = new File(chemin);
+		source.renameTo(destination);
+	}
+
+	public void insertAABRR(AABRR ArbreTest)
+	{
+		if (ArbreTest.getMax() <= this.getMin())
+		{
+			if (this.SAG == null)
+			{
+				CreerSAG(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
+
+			}else {
+				this.getSAG().insertAABRR(ArbreTest);
+			}
+		}else
+		{
+			if (this.SAD == null)
+			{
+				CreerSAD(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
+			}else {
+				this.getSAD().insertAABRR(ArbreTest);
+			}
+		}
+	}
+
+	public void CreaLigne(String ligne)
+	{
+		boolean sepmM = false, sepAa = false, finpremVal = false;
+		String RacMin = "", RacMax = "", premVal = "", valSuivante = "", val = "";
+		if (ligne != null)
+		{
+			for (Integer ii = 0; ii < ligne.length(); ++ii)
+			{
+				if (sepmM == false && ligne.charAt(ii) != ':' && sepAa == false)
+				{
+					RacMin = RacMin + ligne.charAt(ii);
+				}
+				if (sepmM == true && ligne.charAt(ii) != ';' && sepAa == false)
+				{
+					RacMax = RacMax + ligne.charAt(ii);
+				}
+				if (sepmM == true && sepAa == true && finpremVal == false && ligne.charAt(ii) != ':')
+				{
+					premVal = premVal + ligne.charAt(ii);
+				}
+				if(finpremVal == true && ligne.charAt(ii) != ':' )
+				{
+					valSuivante = valSuivante + ligne.charAt(ii);
+				}
+				if (sepmM == false && ligne.charAt(ii) == ':' && sepAa == false)
+				{
+					sepmM = true;
+					this.min =  Integer.parseInt(RacMin);
+				}
+				if (sepmM == true && ligne.charAt(ii) == ';' && sepAa == false)
+				{
+					sepAa = true;
+					this.Max =  Integer.parseInt(RacMax);
+				}
+				if(finpremVal == true && (ligne.charAt(ii) == ':' || ligne.charAt(ii) == '\0' || ii == ligne.length()-1 ))
+				{
+					this.getAA().insertABRR((Integer.parseInt(valSuivante)));
+					valSuivante = "";
+				}
+				if (sepmM == true && sepAa == true && finpremVal == false && (ligne.charAt(ii) == ':' || ligne.charAt(ii) == '\0' || ii == ligne.length()-1 ) )
+				{
+					finpremVal = true;
+					this.AA = new ABRR( Integer.parseInt(premVal));
+				}
+			}
+		}
+	}
+
+
 	public static void main(String[] args) {
 		AABRR GrandArbre = new AABRR(50 ,75, 60);
 		String val = "";

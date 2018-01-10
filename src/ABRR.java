@@ -1,32 +1,50 @@
 package src;
 
-public class ABRR extends Arbre{
-	private int racine;
+public class ABRR {
+	private Integer racine;
 	private ABRR SAG;
 	private ABRR SAD;
 
-	public int getRacine() {
+	public void setRacine(Integer racine) {
+		this.racine = racine;
+	}
+
+	public ABRR getSAG() {
+		return SAG;
+	}
+
+	public void setSAG(ABRR SAG) {
+		this.SAG = SAG;
+	}
+
+
+	public ABRR getSAD() {
+		return SAD;
+	}
+
+	public void setSAD(ABRR SAD) {
+		this.SAD = SAD;
+	}
+
+	public Integer getRacine() {
 		return racine;
 	}
 
-	/**
-	 * @param args
-	 */
-	public ABRR(int racine){
+	public ABRR(Integer racine){
 		this.racine = racine;
 		this.SAG = null;
 		this.SAD = null;
 	}
 
-	public void CreerSAG(int racine){
+	public void CreerSAG(Integer racine){
 		this.SAG = new ABRR(racine);
 	}
 
-	public void CreerSAD(int racine){
+	public void CreerSAD(Integer racine){
 		this.SAD = new ABRR(racine);
 	}
 
-	public void choixSA(int racineSA){
+	public void choixSA(Integer racineSA){
 		if (racineSA <= this.racine){
 			CreerSAD(racineSA);
 		}else{
@@ -34,75 +52,66 @@ public class ABRR extends Arbre{
 		}
 	}
 
-	public void setRacine(int racine){
-	    this.racine = racine;
-    }
-
 	public String Parcours(String valeur){
-			valeur = valeur + this.racine + ':';
-			if (this.SAG != null)
-			{
-				valeur = this.SAG.Parcours(valeur);
-			}
-			if (this.SAD != null)
-			{
-				valeur = this.SAD.Parcours(valeur);
-			}
-		//}
-		//super.Parcours(valeur);
+		valeur = valeur + this.racine;
+		if (this.SAG != null || this.SAD != null)
+		{
+			valeur = valeur + ':';
+		}
+		if (this.SAG != null)
+		{
+			valeur = this.SAG.Parcours(valeur);
+		}
+
+		if (this.SAD != null)
+		{
+			valeur = valeur + ':';
+			valeur = this.SAD.Parcours(valeur);
+		}
 		return valeur;
 	}
 
-	public void RandomCreation(int nbNoeuds, int max, int min) {
-		if (nbNoeuds > 0) {
-			int nombreAleatoire = getRandomInt(min, max);
-			this.CreerSAG(nombreAleatoire);
-			this.SAG.RandomCreation(nbNoeuds - 1, nombreAleatoire, min);
-			int nombreAleatoire2 = getRandomInt(nombreAleatoire, max);
-			this.CreerSAD(nombreAleatoire2);
-			this.SAD.RandomCreation(nbNoeuds - 1, nombreAleatoire2, nombreAleatoire);
+	public void insertABRR(Integer valeur)
+	{
+		if(this.racine == null)
+		{
+			this.racine = valeur;
+		}
+		else {
+			if (valeur >= this.racine)
+			{
+				if (this.SAG == null)
+				{
+					CreerSAG(valeur);
+				}else {
+					this.getSAG().insertABRR(valeur);
+				}
+			}
+			else{
+				if (this.SAD == null)
+				{
+					CreerSAD(valeur);
+				}else {
+					this.getSAD().insertABRR(valeur);
+				}
+			}
 		}
 	}
 
-	public int getRandomInt(int min, int max) {
-		return (int) Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-	public void RandomCreationG(int nbNoeuds, int max, int min) {
-//        System.out.println(this.racine);
-        if (nbNoeuds > 0) {
-            int nombreAleatoire = min + (int) (Math.random() * ((max - min) + 1));
-			System.out.println(nombreAleatoire);
-            this.CreerSAG(nombreAleatoire);
-            this.SAG.RandomCreationG(nbNoeuds - 1, nombreAleatoire, min);
-            int nombreAleatoire2 = min + (int) (Math.random() * ((max) + nombreAleatoire));
-            this.CreerSAD(nombreAleatoire2);
-            this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, nombreAleatoire);
-        }
-    }
-
-	public void RandomCreationD(int nbNoeuds, int max, int min){
-        System.out.println(this.racine);
-        if (nbNoeuds > 0) {
-            int nombreAleatoire = min + (int)(Math.random() * ((max - min) + 1));
-            this.CreerSAG(nombreAleatoire);
-            this.SAG.RandomCreationG(nbNoeuds - 1, max, nombreAleatoire);
-            int nombreAleatoire2 = min + (int)(Math.random() * ((max - nombreAleatoire) + 1));
-            this.CreerSAD(nombreAleatoire2);
-            this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, 1);
-        }
-    }
-
-	private boolean checkABRR(ABRR a, int min, int max) {
-		if (a == null)
+	public boolean checkABRR(ABRR a, Integer min, Integer max) {
+		if (a == null) {
 			return true;
-		if (a.val < min || a.val > max)
+		}
+		if (a.racine < min || a.racine > max) {
 			return false;
-		if ((a.sag != null) && (a.sag.getVal() < a.getVal()))
+		}
+		if ((a.SAG != null) && (a.SAG.racine < a.racine)) {
 			return false;
-		if ((a.sad != null) && (a.sad.getVal() > a.getVal()))
+		}
+		if ((a.SAD != null) && (a.SAD.racine > a.racine)) {
 			return false;
-		return (checkABRR(a.sag, min, max) && checkABRR(a.sad, min, max));
+		}
+		return (checkABRR(a.SAG, min, max) && checkABRR(a.SAD, min, max));
 	}
 
 
