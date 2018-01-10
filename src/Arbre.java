@@ -1,3 +1,5 @@
+package src;
+
 public abstract class Arbre {
 	protected Arbre SAG;
 	protected Arbre SAD;
@@ -28,8 +30,6 @@ public abstract class Arbre {
 
 	}
 
-		}
-	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

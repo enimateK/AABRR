@@ -1,3 +1,5 @@
+package src;
+
 public class ABRR extends Arbre{
 	private int racine;
 	private ABRR SAG;
@@ -13,17 +15,17 @@ public class ABRR extends Arbre{
 	public ABRR(int racine){
 		this.racine = racine;
 		this.SAG = null;
-		this.SAD = null;		
+		this.SAD = null;
 	}
-	
+
 	public void CreerSAG(int racine){
 		this.SAG = new ABRR(racine);
 	}
-	
+
 	public void CreerSAD(int racine){
 		this.SAD = new ABRR(racine);
 	}
-	
+
 	public void choixSA(int racineSA){
 		if (racineSA <= this.racine){
 			CreerSAD(racineSA);
@@ -35,14 +37,14 @@ public class ABRR extends Arbre{
 	public void setRacine(int racine){
 	    this.racine = racine;
     }
-	
+
 	public String Parcours(String valeur){
 			valeur = valeur + this.racine + ':';
-			if (this.SAG != null) 
+			if (this.SAG != null)
 			{
 				valeur = this.SAG.Parcours(valeur);
 			}
-			if (this.SAD != null) 
+			if (this.SAD != null)
 			{
 				valeur = this.SAD.Parcours(valeur);
 			}
@@ -51,13 +53,29 @@ public class ABRR extends Arbre{
 		return valeur;
 	}
 
+	public void RandomCreation(int nbNoeuds, int max, int min) {
+		if (nbNoeuds > 0) {
+			int nombreAleatoire = getRandomInt(min, max);
+			this.CreerSAG(nombreAleatoire);
+			this.SAG.RandomCreation(nbNoeuds - 1, nombreAleatoire, min);
+			int nombreAleatoire2 = getRandomInt(nombreAleatoire, max);
+			this.CreerSAD(nombreAleatoire2);
+			this.SAD.RandomCreation(nbNoeuds - 1, nombreAleatoire2, nombreAleatoire);
+		}
+	}
+
+	public int getRandomInt(int min, int max) {
+		return (int) Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	public void RandomCreationG(int nbNoeuds, int max, int min) {
-        System.out.println(this.racine);
+//        System.out.println(this.racine);
         if (nbNoeuds > 0) {
             int nombreAleatoire = min + (int) (Math.random() * ((max - min) + 1));
+			System.out.println(nombreAleatoire);
             this.CreerSAG(nombreAleatoire);
-            this.SAG.RandomCreationG(nbNoeuds - 1, max, nombreAleatoire);
-            int nombreAleatoire2 = min + (int) (Math.random() * ((max - min) + 1));
+            this.SAG.RandomCreationG(nbNoeuds - 1, nombreAleatoire, min);
+            int nombreAleatoire2 = min + (int) (Math.random() * ((max) + nombreAleatoire));
             this.CreerSAD(nombreAleatoire2);
             this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, nombreAleatoire);
         }
@@ -69,7 +87,7 @@ public class ABRR extends Arbre{
             int nombreAleatoire = min + (int)(Math.random() * ((max - min) + 1));
             this.CreerSAG(nombreAleatoire);
             this.SAG.RandomCreationG(nbNoeuds - 1, max, nombreAleatoire);
-            int nombreAleatoire2 = min + (int)(Math.random() * ((max - min) + 1));
+            int nombreAleatoire2 = min + (int)(Math.random() * ((max - nombreAleatoire) + 1));
             this.CreerSAD(nombreAleatoire2);
             this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, 1);
         }

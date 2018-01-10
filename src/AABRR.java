@@ -1,12 +1,54 @@
+package src;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.*;
+
+
 
 public class AABRR extends Arbre {
-	private int min; //minimum
-	private int Max; // Maximum
+	private Integer min; //minimum
+	private Integer Max; // Maximum
 	private ABRR AA;
 	private AABRR SAG;
+
+	public Integer getMin() {
+		return min;
+	}
+
+	public void setMin(Integer min) {
+		this.min = min;
+	}
+
+	public Integer getMax() {
+		return Max;
+	}
+
+	public void setMax(Integer max) {
+		Max = max;
+	}
+
+	public void setAA(ABRR AA) {
+		this.AA = AA;
+	}
+
+	public AABRR getSAG() {
+		return SAG;
+	}
+
+	public void setSAG(AABRR SAG) {
+		this.SAG = SAG;
+	}
+
+	public AABRR getSAD() {
+		return SAD;
+	}
+
+	public void setSAD(AABRR SAD) {
+		this.SAD = SAD;
+	}
+
 	private AABRR SAD;
 	/**
 	 * @param args
@@ -17,6 +59,9 @@ public class AABRR extends Arbre {
 		this.Max = M;
 		this.AA = new ABRR(racine);
 
+	}
+
+	public AABRR() {
 	}
 	
 	public void CreerSAG(int m, int M, int racine){
@@ -32,9 +77,11 @@ public class AABRR extends Arbre {
 	}
 	
 	public String Parcours(String valeur){
+		System.out.println(this.min);
+		System.out.println(this.Max);
 		valeur = valeur + this.min + ':' +  this.Max + ';' ;
-		valeur = AA.Parcours(valeur);
-		valeur = valeur + "_";
+//		valeur = AA.Parcours(valeur);
+//		valeur = valeur + "_";
 		if (this.SAG != null)
 		{
 		valeur = this.SAG.Parcours(valeur);
@@ -46,6 +93,21 @@ public class AABRR extends Arbre {
 		//super.Parcours(valeur);
 		return valeur;
 	}
+
+	public AABRR InsererAABRR(AABRR arbre, AABRR sousArbre) {
+		if (arbre == null) {
+			arbre = sousArbre;
+		} else {
+			if (sousArbre.getMin() <= arbre.getMin()){
+				arbre.InsererAABRR(arbre.getSAG(), sousArbre);
+			} else {
+				arbre.InsererAABRR(arbre.getSAD(), sousArbre);
+			}
+		}
+
+		return arbre;
+	}
+
 
 	public void RandomCreationG(int nbNoeuds, int max, int min) {
 		System.out.println(this.AA.getRacine());
@@ -71,39 +133,39 @@ public class AABRR extends Arbre {
 		}
 	}
 	
-	public void Save(String nomFichier)
-	{
-		String Parcours = "";
-		File f = new File("Arbre AABRR.txt");
-		try
-		{
-			java.io.File fichier = new java.io.File(nomFichier);
-			fichier.createNewFile();
-		}
-		catch (IOException err1)
-		{
-			System.out.println("Impossible de créer le fichier");
-			System.out.println(err1);
-		}
-		try
-		{
-		java.io.FileOutputStream Flux = new java.io.FileOutputStream(nomFichier); // Doit être utilisé dans un bloc TRY
-		}
-		catch (FileNotFoundException err2)
-		{
-		System.out.println("Impossible de trouver le fichier");
-		System.out.println(err2);
-		}
-
-		Parcours = this.Parcours(Parcours);
-		Parcours.replace("_", System.getProperty("line.separator"));
-		Flux.close(); // Toujours dans un TRY
-		catch (IOException err3)
-		{
-		}
-		
-
-	}
+//	public void Save(String nomFichier)
+//	{
+//		String Parcours = "";
+//		File f = new File("Arbre AABRR.txt");
+//		try
+//		{
+//			java.io.File fichier = new java.io.File(nomFichier);
+//			fichier.createNewFile();
+//		}
+//		catch (IOException err1)
+//		{
+//			System.out.println("Impossible de créer le fichier");
+//			System.out.println(err1);
+//		}
+//		try
+//		{
+//		java.io.FileOutputStream Flux = new java.io.FileOutputStream(nomFichier); // Doit être utilisé dans un bloc TRY
+//		}
+//		catch (FileNotFoundException err2)
+//		{
+//		System.out.println("Impossible de trouver le fichier");
+//		System.out.println(err2);
+//		}
+//
+//		Parcours = this.Parcours(Parcours);
+//		Parcours.replace("_", System.getProperty("line.separator"));
+//		Flux.close(); // Toujours dans un TRY
+//		catch (IOException err3)
+//		{
+//		}
+//
+//
+//	}
 	
 	public static void main(String[] args) {
 		AABRR GrandArbre = new AABRR(50 ,75, 60);
