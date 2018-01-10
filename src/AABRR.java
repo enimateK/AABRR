@@ -192,7 +192,6 @@ public class AABRR {
 			if (this.SAG == null)
 			{
 				CreerSAG(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
-
 			}else {
 				this.getSAG().insertAABRR(ArbreTest);
 			}

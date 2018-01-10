@@ -1,5 +1,4 @@
 import src.AABRR;
-
 import java.util.Scanner;
 
 public class Main{
@@ -34,7 +33,6 @@ public class Main{
 				break;
 			case "5":
 				System.out.println("5. Recherche d'un entier dans un AABRR");
-
 				break;
 			case "6":
 				break;
