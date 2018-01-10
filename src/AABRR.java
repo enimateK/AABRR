@@ -59,7 +59,7 @@ public class AABRR {
 	public AABRR() {
 	}
 
-	public AABRR(String chemin)
+	public AABRR (String chemin)
 	{
 		AABRR Arbre1 = new AABRR (null, null, null);
 		try
@@ -128,28 +128,24 @@ public class AABRR {
 		return arbre;
 	}
 
-	private boolean checkAABRR(AABRR abr) {
-		//Teste si l'arbre est vide
-		if (abr == null)
+	private boolean verif(AABRR arbre) {
+		if (arbre == null)
 			return true;
 
-		//Teste si l'arbre ABR' de a est valide
-		if(!abr.AA.checkABRR(abr.AA, abr.min, abr.Max))
+		if(!arbre.AA.verif(arbre.AA, arbre.min, arbre.Max))
 			return false;
 
-		//Teste si les fils droit et gauche de a sont à la bonne place
-		if ((abr.SAG != null) && (abr.SAG.getMin() > abr.getMin()))
+		if ((arbre.SAG != null) && (arbre.SAG.getMin() > arbre.getMin()))
 			return false;
-		if ((abr.SAD != null) && (abr.SAD.getMax() < abr.getMax()))
-			return false;
-
-		//Teste si les intervalles des fils sont disjoints
-		if ((abr.SAG != null) && (abr.SAG.getMax() >= abr.getMin()))
-			return false;
-		if ((abr.SAD != null) && (abr.SAD.getMin() <= abr.getMax()))
+		if ((arbre.SAD != null) && (arbre.SAD.getMax() < arbre.getMax()))
 			return false;
 
-		return (checkAABRR(abr.SAG) && checkAABRR(abr.SAD));
+		if ((arbre.SAG != null) && (arbre.SAG.getMax() >= arbre.getMin()))
+			return false;
+		if ((arbre.SAD != null) && (arbre.SAD.getMin() <= arbre.getMax()))
+			return false;
+
+		return (verif(arbre.SAG) && verif(arbre.SAD));
 	}
 
 	public void Save(String nomFichier, String chemin)
@@ -196,7 +192,6 @@ public class AABRR {
 			if (this.SAG == null)
 			{
 				CreerSAG(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
-
 			}else {
 				this.getSAG().insertAABRR(ArbreTest);
 			}
@@ -271,5 +266,30 @@ public class AABRR {
 		System.out.println(val);
 
 	}
+
+    public void supprimerEntier(int valeur, AABRR arbre) {
+        if(valeur >= arbre.min && valeur <= arbre.Max) {
+            if(arbre.getAA().getRacine() == valeur && arbre.getAA().getSAD() == null && arbre.getAA().getSAG() == null) {
+                arbre.AA = null;
+            }
+            else {
+                ABRR sousArbre = arbre.getAA().recherche(valeur, arbre.getAA());
+                if(sousArbre != null) {
+                    sousArbre.supprimerArbre(sousArbre);
+                }
+            }
+        }
+        else if (arbre.SAG != null && valeur < arbre.min) {
+            supprimerEntier(valeur, arbre.SAG);
+        }
+        else if (arbre.SAD != null && valeur > arbre.Max) {
+            supprimerEntier(valeur, arbre.SAD);
+        }
+        else {
+            System.out.println("Cette valeur n'est pas présente dans cet AABRR" );
+        }
+    }
+
+
 
 }

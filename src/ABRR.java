@@ -98,23 +98,65 @@ public class ABRR {
 		}
 	}
 
-	public boolean checkABRR(ABRR a, Integer min, Integer max) {
-		if (a == null) {
+	public boolean verif(ABRR arbre, Integer min, Integer max) {
+		if (arbre == null) {
 			return true;
 		}
-		if (a.racine < min || a.racine > max) {
+		if (arbre.racine < min || arbre.racine > max) {
 			return false;
 		}
-		if ((a.SAG != null) && (a.SAG.racine < a.racine)) {
+		if ((arbre.SAG != null) && (arbre.SAG.racine < arbre.racine)) {
 			return false;
 		}
-		if ((a.SAD != null) && (a.SAD.racine > a.racine)) {
+		if ((arbre.SAD != null) && (arbre.SAD.racine > arbre.racine)) {
 			return false;
 		}
-		return (checkABRR(a.SAG, min, max) && checkABRR(a.SAD, min, max));
+		return (verif(arbre.SAG, min, max) && verif(arbre.SAD, min, max));
 	}
 
+	public ABRR supprimerEntier(int x, ABRR abr) {
+		if (abr == null)
+			return abr;
+		if (x == abr.racine)
+			return supprimerArbre(abr);
+		if (x > abr.racine)
+			abr.SAG = supprimerEntier(x, abr.SAG);
+		else
+			abr.SAD = supprimerEntier(x, abr.SAD);
+		return abr;
+	}
 
+	public ABRR supprimerArbre(ABRR sousArbre) {
+		if (sousArbre.SAG == null)
+			return sousArbre.SAD;
+		if (sousArbre.SAD == null)
+			return sousArbre.SAG;
+		ABRR maxSAG = sousArbre.getMaxSAG();
+		sousArbre.racine = maxSAG.racine;
+		sousArbre.SAG = supprimerEntier(maxSAG.racine, sousArbre.SAG);
+		return sousArbre;
+	}
+
+	private ABRR getMaxSAG() {
+		return getMaxSAG(SAG);
+	}
+
+	private ABRR getMaxSAG(ABRR sousArbre) {
+		return sousArbre.SAD == null ? sousArbre : getMaxSAG(sousArbre.SAD);
+	}
+
+	public ABRR recherche(int value, ABRR sousArbre) {
+		if(sousArbre != null) {
+			if(sousArbre.racine == value)
+				return sousArbre;
+			else if(sousArbre.racine < value )
+				return recherche(value, sousArbre.SAG);
+			else
+				return recherche(value, sousArbre.SAD);
+		}
+		else
+			return null;
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
