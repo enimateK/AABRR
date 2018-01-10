@@ -20,7 +20,8 @@ public class AABRR_RANDOM {
             arbreMin = arbreMax + 1;
         }
         AABRR randomAABRR = this.CreerAABRR(sousArbres);
-        randomAABRR.Parcours("");
+        String val = randomAABRR.Parcours("");
+        System.out.println(val);
     }
 
     private AABRR CreerAABRR(ArrayList<AABRR> sousArbres) {

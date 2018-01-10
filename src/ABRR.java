@@ -93,6 +93,19 @@ public class ABRR extends Arbre{
         }
     }
 
+	private boolean checkABRR(ABRR a, int min, int max) {
+		if (a == null)
+			return true;
+		if (a.val < min || a.val > max)
+			return false;
+		if ((a.sag != null) && (a.sag.getVal() < a.getVal()))
+			return false;
+		if ((a.sad != null) && (a.sad.getVal() > a.getVal()))
+			return false;
+		return (checkABRR(a.sag, min, max) && checkABRR(a.sad, min, max));
+	}
+
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

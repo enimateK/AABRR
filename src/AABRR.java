@@ -77,11 +77,9 @@ public class AABRR extends Arbre {
 	}
 	
 	public String Parcours(String valeur){
-		System.out.println(this.min);
-		System.out.println(this.Max);
 		valeur = valeur + this.min + ':' +  this.Max + ';' ;
-//		valeur = AA.Parcours(valeur);
-//		valeur = valeur + "_";
+		valeur = AA.Parcours(valeur);
+		valeur = valeur + "_";
 		if (this.SAG != null)
 		{
 		valeur = this.SAG.Parcours(valeur);
@@ -98,7 +96,7 @@ public class AABRR extends Arbre {
 		if (arbre == null) {
 			arbre = sousArbre;
 		} else {
-			if (sousArbre.getMin() <= arbre.getMin()){
+			if (sousArbre.getMax() <= arbre.getMin()){
 				arbre.InsererAABRR(arbre.getSAG(), sousArbre);
 			} else {
 				arbre.InsererAABRR(arbre.getSAD(), sousArbre);
@@ -107,7 +105,6 @@ public class AABRR extends Arbre {
 
 		return arbre;
 	}
-
 
 	public void RandomCreationG(int nbNoeuds, int max, int min) {
 		System.out.println(this.AA.getRacine());
@@ -131,6 +128,30 @@ public class AABRR extends Arbre {
 			this.CreerSAD(min, max, nombreAleatoire2);
 			this.SAD.RandomCreationD(nbNoeuds - 1, nombreAleatoire2, 1);
 		}
+	}
+
+	private boolean checkAABRR(AABRR abr) {
+		//Teste si l'arbre est vide
+		if (abr == null)
+			return true;
+
+		//Teste si l'arbre ABR' de a est valide
+		if(!abr.AA.checkABRR(abr.min, abr.max))
+			return false;
+
+		//Teste si les fils droit et gauche de a sont à la bonne place
+		if ((abr.SAG != null) && (abr.sag.getMin() > abr.getMin()))
+			return false;
+		if ((abr.SAD != null) && (abr.sad.getMax() < abr.getMax()))
+			return false;
+
+		//Teste si les intervalles des fils sont disjoints
+		if ((abr.sag != null) && (abr.sag.getMax() >= abr.getMin()))
+			return false;
+		if ((abr.sad != null) && (abr.sad.getMin() <= abr.getMax()))
+			return false;
+
+		return (checkAABRR(abr.sag) && checkAABRR(abr.sad));
 	}
 	
 //	public void Save(String nomFichier)
