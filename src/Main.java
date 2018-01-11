@@ -61,7 +61,12 @@ public class Main{
 					arbre = arbre.GenererAABRRAleatoire(nbnoeud, max);
 					break;
 				case "4":
+					boolean verif = true;
+					System.out.println("4. Verifier un AABRR");
+					verif = arbre.verif(arbre);
+					System.out.println(verif);
 					break;
+					
 				case "5":
 					System.out.println("5. Recherche d'un entier dans un AABRR");
 					break;

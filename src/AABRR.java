@@ -137,25 +137,39 @@ public class AABRR {
 		return valeur;
 	}
 
-	private boolean verif(AABRR arbre) {
-		if (arbre == null)
+	public boolean verif(AABRR arbre) {
+		boolean miniarbreOk = true, SAGOK = true, SADOK = true;
+		if (arbre.getMin() == null || arbre == null) {
 			return true;
-
-		if(!arbre.AA.verif(arbre.AA, arbre.min, arbre.Max))
-			return false;
-
-		if ((arbre.SAG != null) && (arbre.SAG.getMin() > arbre.getMin()))
-			return false;
-		if ((arbre.SAD != null) && (arbre.SAD.getMax() < arbre.getMax()))
-			return false;
-
-		if ((arbre.SAG != null) && (arbre.SAG.getMax() >= arbre.getMin()))
-			return false;
-		if ((arbre.SAD != null) && (arbre.SAD.getMin() <= arbre.getMax()))
-			return false;
-
-		return (verif(arbre.SAG) && verif(arbre.SAD));
-	}
+		}else {	
+			if (arbre.AA != null) {
+				
+				miniarbreOk = arbre.AA.verif(arbre.AA, arbre.min, arbre.Max);
+				if (miniarbreOk == false) {
+					return false;
+				}
+			}
+			if ((arbre.SAG != null) && (arbre.SAG.getMin() > arbre.getMin()))
+				return false;
+			if ((arbre.SAD != null) && (arbre.SAD.getMax() < arbre.getMax()))
+				return false;
+	
+			if ((arbre.SAG != null) && (arbre.SAG.getMax() >= arbre.getMin()))
+				return false;
+			if ((arbre.SAD != null) && (arbre.SAD.getMin() <= arbre.getMax()))
+				return false;
+			if (arbre.SAG != null) {
+				SAGOK = verif(arbre.SAG);
+			}
+			
+			if (arbre.SAD != null) {
+				SADOK = verif(arbre.SAD);
+			}
+			
+			return (miniarbreOk && SAGOK && SADOK);
+			
+			}
+		}
 
 	public void Save(String nomFichier, String chemin)
 	{
@@ -316,12 +330,15 @@ public class AABRR {
 
 	public static void main(String[] args) {
 		String val = "";
+		boolean verif;
 		AABRR GrandArbre = new AABRR(null,null,null,null);
 		//AABRR GrandArbre = new AABRR("/home/bastien/eclipse-workspace/Arbre/Fichier.txt");
-		GrandArbre = GrandArbre.GenererAABRRAleatoire(7,213);
-		 val = GrandArbre.Parcours(val);
+		//GrandArbre = GrandArbre.GenererAABRRAleatoire(7,213);
+		verif = GrandArbre.verif(GrandArbre);
+		// val = GrandArbre.Parcours(val);
 		//GrandArbre.Save("Parcours.txt", "/home/bastien/eclipse-workspace/Arbre/src");
 		//val = GrandArbre.Parcours(val);
 		System.out.println(val);
+		System.out.println(verif);
 }
 }

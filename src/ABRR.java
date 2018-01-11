@@ -97,7 +97,7 @@ public class ABRR {
 	public boolean verif(ABRR arbre, Integer min, Integer max) {
 		if (arbre == null) {
 			return true;
-		}
+		}else {
 		if (arbre.racine < min || arbre.racine > max) {
 			return false;
 		}
@@ -106,6 +106,7 @@ public class ABRR {
 		}
 		if ((arbre.SAD != null) && (arbre.SAD.racine > arbre.racine)) {
 			return false;
+		}
 		}
 		return (verif(arbre.SAG, min, max) && verif(arbre.SAD, min, max));
 	}
