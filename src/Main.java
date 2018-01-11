@@ -1,4 +1,3 @@
-import src.AABRR;
 import java.util.Scanner;
 
 public class Main{

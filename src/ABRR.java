@@ -1,5 +1,3 @@
-package src;
-
 public class ABRR {
 	private Integer racine;
 	private ABRR SAG;
@@ -54,12 +52,10 @@ public class ABRR {
 
 	public String Parcours(String valeur){
 		valeur = valeur + this.racine;
-		if (this.SAG != null || this.SAD != null)
-		{
-			valeur = valeur + ':';
-		}
+
 		if (this.SAG != null)
 		{
+			valeur = valeur + ':';
 			valeur = this.SAG.Parcours(valeur);
 		}
 

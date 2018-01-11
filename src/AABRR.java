@@ -1,7 +1,4 @@
-package src;
-
 import java.io.*;
-import java.util.*;
 
 
 
@@ -76,8 +73,11 @@ public class AABRR {
 				}
 				else {
 					Arbre1.CreaLigne(ligne);
+					val = Arbre1.Parcours(val);
+					System.out.println("Parcours arbre1 = " + val);
 					this.insertAABRR(Arbre1);
 				}
+				
 			}
 			br.close();
 		}
@@ -114,6 +114,7 @@ public class AABRR {
 		}
 		return valeur;
 	}
+/*	
 	public AABRR InsererAABRR(AABRR arbre, AABRR sousArbre) {
 		if (arbre == null) {
 			arbre = sousArbre;
@@ -127,7 +128,7 @@ public class AABRR {
 
 		return arbre;
 	}
-
+*/
 	private boolean verif(AABRR arbre) {
 		if (arbre == null)
 			return true;
@@ -185,13 +186,14 @@ public class AABRR {
 		source.renameTo(destination);
 	}
 
-	public void insertAABRR(AABRR ArbreTest)
+	public boolean insertAABRR(AABRR ArbreTest)
 	{
 		if (ArbreTest.getMax() <= this.getMin())
 		{
 			if (this.SAG == null)
 			{
-				CreerSAG(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
+				this.CreerSAG(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
+				return true;
 			}else {
 				this.getSAG().insertAABRR(ArbreTest);
 			}
@@ -199,11 +201,13 @@ public class AABRR {
 		{
 			if (this.SAD == null)
 			{
-				CreerSAD(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
+				this.CreerSAD(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
+				return true;
 			}else {
 				this.getSAD().insertAABRR(ArbreTest);
 			}
 		}
+		return false;
 	}
 
 	public void CreaLigne(String ligne)
@@ -242,6 +246,7 @@ public class AABRR {
 				}
 				if(finpremVal == true && (ligne.charAt(ii) == ':' || ligne.charAt(ii) == '\0' || ii == ligne.length()-1 ))
 				{
+					
 					this.getAA().insertABRR((Integer.parseInt(valSuivante)));
 					valSuivante = "";
 				}
@@ -253,19 +258,7 @@ public class AABRR {
 			}
 		}
 	}
-
-
-	public static void main(String[] args) {
-		AABRR GrandArbre = new AABRR(50 ,75, 60);
-		String val = "";
-
-		GrandArbre.CreerSAD(78, 80, 80);
-		GrandArbre.CreerSAG(9, 22, 9);
-		
-		//val = GrandArbre.Save();
-		System.out.println(val);
-
-	}
+	
 
     public void supprimerEntier(int valeur, AABRR arbre) {
         if(valeur >= arbre.min && valeur <= arbre.Max) {
@@ -292,4 +285,15 @@ public class AABRR {
 
 
 
+
+
+
+
+	public static void main(String[] args) {
+		AABRR GrandArbre = new AABRR("/home/bastien/eclipse-workspace/Arbre/Fichier.txt");
+		String val = "";
+		GrandArbre.Save("Parcours.txt", "/home/bastien/eclipse-workspace/Arbre/src");
+		val = GrandArbre.Parcours(val);
+		System.out.println(val);
+}
 }
