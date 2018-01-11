@@ -15,7 +15,7 @@ public class AABRR_RANDOM {
         ArrayList<AABRR> sousArbres = new ArrayList<AABRR>();
         for (Integer arbreMax: values) {
             arbreMin = arbreMin + 1;
-            AABRR sousArbre = new AABRR(arbreMin, arbreMax, this.getRandomInt(arbreMin, arbreMax) );
+            AABRR sousArbre = new AABRR(arbreMin, arbreMax, this.getRandomInt(arbreMin, arbreMax), null );
             sousArbres.add(sousArbre);
             arbreMin = arbreMax + 1;
         }

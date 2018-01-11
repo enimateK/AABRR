@@ -1,5 +1,3 @@
-package src;
-
 public class ABRR {
 	private Integer racine;
 	private ABRR SAG;
@@ -54,12 +52,10 @@ public class ABRR {
 
 	public String Parcours(String valeur){
 		valeur = valeur + this.racine;
-		if (this.SAG != null || this.SAD != null)
-		{
-			valeur = valeur + ':';
-		}
+
 		if (this.SAG != null)
 		{
+			valeur = valeur + ':';
 			valeur = this.SAG.Parcours(valeur);
 		}
 
@@ -101,7 +97,7 @@ public class ABRR {
 	public boolean verif(ABRR arbre, Integer min, Integer max) {
 		if (arbre == null) {
 			return true;
-		}
+		}else {
 		if (arbre.racine < min || arbre.racine > max) {
 			return false;
 		}
@@ -110,6 +106,7 @@ public class ABRR {
 		}
 		if ((arbre.SAD != null) && (arbre.SAD.racine > arbre.racine)) {
 			return false;
+		}
 		}
 		return (verif(arbre.SAG, min, max) && verif(arbre.SAD, min, max));
 	}
