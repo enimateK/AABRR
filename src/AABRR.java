@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 
@@ -7,7 +9,8 @@ public class AABRR {
 	private Integer Max; // Maximum
 	private ABRR AA;
 	private AABRR SAG;
-
+	private AABRR SAD;
+	
 	public Integer getMin() {
 		return min;
 	}
@@ -44,21 +47,42 @@ public class AABRR {
 		this.SAD = SAD;
 	}
 
-	private AABRR SAD;
-
-	public AABRR(Integer m, Integer M, Integer racine){
-		super();
+	public AABRR(Integer m, Integer M, Integer racine, ABRR arbre){
 		this.min = m;
 		this.Max = M;
-		this.AA = new ABRR(racine);
+		if (arbre == null)
+		{
+			this.AA = new ABRR(racine);
+		}else
+			this.AA = arbre;
 	}
-
-	public AABRR() {
-	}
+	
+		public boolean InsererAABRR(AABRR n){
+			//test si le noeud peut être ajouté
+				boolean result = false;
+				if (n.getMin() > this.getMax()) {
+					if (this.SAD == null) {
+						this.SAD = new AABRR(n.getMin(), n.getMax(), n.AA.getRacine(), null);
+						this.SAD.AA = n.AA;
+						return true;
+					} else {
+						return this.SAD.InsererAABRR(n);
+					}
+				} else if (n.getMax() < this.getMin()) {
+					if (this.SAG == null) {
+						this.SAG = new AABRR(n.getMin(), n.getMax(), n.AA.getRacine(), null);
+						this.SAG.AA = n.AA;
+						return true;
+					} else {
+						return this.SAG.InsererAABRR(n);
+					}
+				}
+				return result;
+		}
 
 	public AABRR (String chemin)
 	{
-		AABRR Arbre1 = new AABRR (null, null, null);
+		AABRR Arbre1 = new AABRR (null, null, null, null);
 		try
 		{
 			InputStream ips=new FileInputStream(chemin);
@@ -73,9 +97,7 @@ public class AABRR {
 				}
 				else {
 					Arbre1.CreaLigne(ligne);
-					val = Arbre1.Parcours(val);
-					System.out.println("Parcours arbre1 = " + val);
-					this.insertAABRR(Arbre1);
+					this.InsererAABRR(Arbre1);
 				}
 				
 			}
@@ -88,12 +110,12 @@ public class AABRR {
 	}
 
 
-	public void CreerSAG(int m, int M, int racine){
-		this.SAG = new AABRR(m,M,racine);
+	public void CreerSAG(int m, int M, int racine, ABRR arbre){
+		this.SAG = new AABRR(m,M, racine, arbre);
 	}
 	
-	public void CreerSAD(int m, int M, int racine){
-		this.SAD = new AABRR(m,M,racine);
+	public void CreerSAD(int m, int M, int racine, ABRR arbre){
+		this.SAD = new AABRR(m,M,racine, arbre);
 	}
 	
 	public ABRR getAA(){
@@ -114,21 +136,7 @@ public class AABRR {
 		}
 		return valeur;
 	}
-/*	
-	public AABRR InsererAABRR(AABRR arbre, AABRR sousArbre) {
-		if (arbre == null) {
-			arbre = sousArbre;
-		} else {
-			if (sousArbre.getMax() <= arbre.getMin()){
-				arbre.InsererAABRR(arbre.getSAG(), sousArbre);
-			} else {
-				arbre.InsererAABRR(arbre.getSAD(), sousArbre);
-			}
-		}
 
-		return arbre;
-	}
-*/
 	private boolean verif(AABRR arbre) {
 		if (arbre == null)
 			return true;
@@ -186,30 +194,6 @@ public class AABRR {
 		source.renameTo(destination);
 	}
 
-	public boolean insertAABRR(AABRR ArbreTest)
-	{
-		if (ArbreTest.getMax() <= this.getMin())
-		{
-			if (this.SAG == null)
-			{
-				this.CreerSAG(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
-				return true;
-			}else {
-				this.getSAG().insertAABRR(ArbreTest);
-			}
-		}else
-		{
-			if (this.SAD == null)
-			{
-				this.CreerSAD(ArbreTest.getMin(), ArbreTest.getMax(), ArbreTest.getAA().getRacine());
-				return true;
-			}else {
-				this.getSAD().insertAABRR(ArbreTest);
-			}
-		}
-		return false;
-	}
-
 	public void CreaLigne(String ligne)
 	{
 		boolean sepmM = false, sepAa = false, finpremVal = false;
@@ -253,7 +237,7 @@ public class AABRR {
 				if (sepmM == true && sepAa == true && finpremVal == false && (ligne.charAt(ii) == ':' || ligne.charAt(ii) == '\0' || ii == ligne.length()-1 ) )
 				{
 					finpremVal = true;
-					this.AA = new ABRR( Integer.parseInt(premVal));
+					this.AA = new ABRR(Integer.parseInt(premVal));
 				}
 			}
 		}
@@ -282,6 +266,47 @@ public class AABRR {
             System.out.println("Cette valeur n'est pas présente dans cet AABRR" );
         }
     }
+    
+    
+    public AABRR GenererAABRRAleatoire(int nbNoeuds, int max) {
+        ArrayList<Integer> values = new ArrayList<>();
+        for (int i = 1; i <= nbNoeuds ;i++) {
+            values.add(this.getRandomInt(1, max));
+        }
+        Collections.sort(values);
+        int arbreMin = 0;
+        ArrayList<AABRR> sousArbres = new ArrayList<AABRR>();
+        for (Integer arbreMax: values) {
+            arbreMin = arbreMin + 1;
+            AABRR sousArbre = new AABRR(arbreMin, arbreMax, this.getRandomInt(arbreMin, arbreMax), null );
+            sousArbres.add(sousArbre);
+            arbreMin = arbreMax + 1;
+        }
+        AABRR randomAABRR = this.CreerAABRR(sousArbres);
+        return randomAABRR;
+    }
+
+    private AABRR CreerAABRR(ArrayList<AABRR> sousArbres) {
+    	String val = "";
+        AABRR arbre = new AABRR(null, null, null, null);
+        AABRR arbreComplet = new AABRR(null,null,null,null);
+        for (AABRR sousArbre: sousArbres){
+           arbre = sousArbre;
+           if (arbreComplet.getMin() == null)
+           {
+        	   arbreComplet = arbre;
+           }else {
+        	   arbreComplet.InsererAABRR(arbre);
+           }
+        }
+        return arbreComplet;
+    }
+
+
+
+    private int getRandomInt(int min, int max) {
+        return (int) Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
 
 
@@ -290,10 +315,13 @@ public class AABRR {
 
 
 	public static void main(String[] args) {
-		AABRR GrandArbre = new AABRR("/home/bastien/eclipse-workspace/Arbre/Fichier.txt");
 		String val = "";
-		GrandArbre.Save("Parcours.txt", "/home/bastien/eclipse-workspace/Arbre/src");
-		val = GrandArbre.Parcours(val);
+		AABRR GrandArbre = new AABRR(null,null,null,null);
+		//AABRR GrandArbre = new AABRR("/home/bastien/eclipse-workspace/Arbre/Fichier.txt");
+		GrandArbre = GrandArbre.GenererAABRRAleatoire(7,213);
+		 val = GrandArbre.Parcours(val);
+		//GrandArbre.Save("Parcours.txt", "/home/bastien/eclipse-workspace/Arbre/src");
+		//val = GrandArbre.Parcours(val);
 		System.out.println(val);
 }
 }
