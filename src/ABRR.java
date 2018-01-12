@@ -1,3 +1,5 @@
+package src;
+
 public class ABRR {
 	private Integer racine;
 	private ABRR SAG;
@@ -112,8 +114,6 @@ public class ABRR {
 	}
 
 	
-	
-	
 	public ABRR supprimerEntier(ABRR arbre, Integer valeur) {
 
 		Integer maxSAD = null;
@@ -142,37 +142,7 @@ public class ABRR {
 		}
 		return arbre;
 	}
-/*
-	private ABRR supprimerEntier(int valeur, ABRR abr) {
-		if (abr.racine == null) {
-			return null;
-		}
-		if (valeur == abr.racine) {
-			System.out.println("Là on va supprimer l'arbre " + valeur);
-			return supprimerArbre(abr);
-		}
-		if (valeur > abr.racine) {
-			abr.SAG = supprimerEntier(valeur, abr.SAG);
-		}
-		else {
-			abr.SAD = supprimerEntier(valeur, abr.SAD);
-		}
-		return abr;
-	}
 
-	public ABRR supprimerArbre(ABRR sousArbre) {
-		if (sousArbre.SAG == null) {
-			return sousArbre.SAD;
-		}
-		if (sousArbre.SAD == null) {
-			return sousArbre.SAG;
-		}
-		ABRR maxSAG = sousArbre.getMaxSAG(SAG);
-		sousArbre.racine = maxSAG.racine;
-		sousArbre.SAG = supprimerEntier(maxSAG.racine, sousArbre.SAG);
-		return sousArbre;
-	}
-*/
 	private Integer SuppriMaxSAG(ABRR sousArbre, Integer max) {
 		String val = "";
 		if (sousArbre.SAD == null) {

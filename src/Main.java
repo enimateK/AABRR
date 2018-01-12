@@ -1,3 +1,5 @@
+import src.AABRR;
+
 import java.util.Scanner;
 
 public class Main{
@@ -106,6 +108,7 @@ public class Main{
 					val = arbre.Parcours(val);
 					System.out.println("");
 					System.out.println(val);
+					val = "";
                     break;
 
 				case "x":

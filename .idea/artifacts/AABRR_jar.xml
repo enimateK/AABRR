@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="AABRR:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AABRR_jar</output-path>
+    <root id="root">
+      <element id="archive" name="AABRR.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="AABRR" />
+      </element>
+    </root>
+  </artifact>
+</component>

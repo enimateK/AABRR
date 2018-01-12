@@ -1,3 +1,5 @@
+package src;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,7 +126,9 @@ public class AABRR {
 
 	public String Parcours(String valeur){
 		valeur = valeur + this.min + ':' +  this.Max + ';' ;
-		valeur = AA.Parcours(valeur);
+		if (this.AA != null){
+			valeur = AA.Parcours(valeur);
+		}
 		valeur = valeur + System.getProperty("line.separator");
 		if (this.SAG != null)
 		{
