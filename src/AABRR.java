@@ -1,3 +1,5 @@
+package src;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -256,29 +258,66 @@ public class AABRR {
 			}
 		}
 	}
-	
 
-    public void supprimerEntier(int valeur, AABRR arbre) {
-        if(valeur >= arbre.min && valeur <= arbre.Max) {
-            if(arbre.getAA().getRacine() == valeur && arbre.getAA().getSAD() == null && arbre.getAA().getSAG() == null) {
-                arbre.AA = null;
-            }
-            else {
-                ABRR sousArbre = arbre.getAA().recherche(valeur, arbre.getAA());
-                if(sousArbre != null) {
-                    sousArbre.supprimerArbre(sousArbre);
-                }
-            }
-        }
-        else if (arbre.SAG != null && valeur < arbre.min) {
-            supprimerEntier(valeur, arbre.SAG);
-        }
-        else if (arbre.SAD != null && valeur > arbre.Max) {
-            supprimerEntier(valeur, arbre.SAD);
-        }
-        else {
-            System.out.println("Cette valeur n'est pas présente dans cet AABRR" );
-        }
+	public void insererEntier(int valeur, AABRR arbre) {
+		if (arbre != null && arbre.getMax() != null && arbre.getMin() != null) {
+			AABRR sousArbre = getSousArbre(arbre, valeur);
+			if(sousArbre == null) {
+				System.out.println("Pas d'ABRR correspondant");
+			} else {
+				ABRR a = sousArbre.getAA();
+				if(a == null) {
+					sousArbre.setAA(new ABRR(valeur));
+				}
+				else {
+					sousArbre.getAA().insererEntier(sousArbre.getAA(), valeur);
+				}
+				System.out.println("Entier inséré");
+			}
+		} else {
+			System.out.println("Cet AABRR est vide");
+		}
+	}
+
+	private AABRR getSousArbre(AABRR arbre, int valeur) {
+		if(arbre == null) {
+			return null;
+		}else {
+			if(arbre.getMin() <= valeur && arbre.getMax() >= valeur) {
+				return arbre;
+			}
+			else if( arbre.getMin() > valeur) {
+				return getSousArbre(arbre.SAG, valeur);
+			}else {
+				return getSousArbre(arbre.SAD, valeur);
+			}
+		}
+	}
+
+    public AABRR supprimerEntier(int valeur, AABRR arbre) {
+		if (arbre != null && arbre.getMin() != null && arbre.getMax() != null) {
+			if(valeur >= arbre.min && valeur <= arbre.Max) {
+				if(arbre.getAA().getRacine() == valeur && arbre.getAA().getSAD() == null && arbre.getAA().getSAG() == null) {
+					arbre.AA = null;
+				}
+				else {
+					ABRR sousArbre = arbre.getAA().recherche(valeur, arbre.getAA());
+					if(sousArbre != null) {
+						sousArbre.supprimerArbre(sousArbre);
+					}
+				}
+			}
+			else if (arbre.SAG != null && valeur < arbre.min) {
+				supprimerEntier(valeur, arbre.SAG);
+			}
+			else if (arbre.SAD != null && valeur > arbre.Max) {
+				supprimerEntier(valeur, arbre.SAD);
+			}
+			else {
+				System.out.println("Cette valeur n'est pas présente dans cet AABRR" );
+			}
+		}
+		return arbre;
     }
     
     
@@ -322,6 +361,25 @@ public class AABRR {
         return (int) Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+	public boolean rechercheEntier(AABRR arbre, int valeur){
+		if(arbre != null && arbre.getMin() != null && arbre.getMax() != null){
+			if(arbre.getMin() <= valeur && arbre.getMax() >= valeur){
+				System.out.println("Entier trouvé dans l'ABRR entre " + arbre.getMin()+ " et "+ arbre.getMax());
+				arbre.getAA().rechercheEntier(arbre.getAA(), valeur);
+				return true;
+			}
+			else{
+				if(arbre.getMin() > valeur){
+					return rechercheEntier(arbre.getSAG(), valeur);
+				}
+				if(arbre.getMax() < valeur){
+					return rechercheEntier(arbre.getSAD(), valeur);
+				}
+			}
+
+		}
+		return false;
+	}
 
 
 
@@ -329,16 +387,5 @@ public class AABRR {
 
 
 	public static void main(String[] args) {
-		String val = "";
-		boolean verif;
-		AABRR GrandArbre = new AABRR(null,null,null,null);
-		//AABRR GrandArbre = new AABRR("/home/bastien/eclipse-workspace/Arbre/Fichier.txt");
-		//GrandArbre = GrandArbre.GenererAABRRAleatoire(7,213);
-		verif = GrandArbre.verif(GrandArbre);
-		// val = GrandArbre.Parcours(val);
-		//GrandArbre.Save("Parcours.txt", "/home/bastien/eclipse-workspace/Arbre/src");
-		//val = GrandArbre.Parcours(val);
-		System.out.println(val);
-		System.out.println(verif);
-}
+	}
 }
