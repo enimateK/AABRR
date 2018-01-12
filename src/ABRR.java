@@ -1,3 +1,5 @@
+package src;
+
 public class ABRR {
 	private Integer racine;
 	private ABRR SAG;
@@ -111,31 +113,33 @@ public class ABRR {
 		return (verif(arbre.SAG, min, max) && verif(arbre.SAD, min, max));
 	}
 
-	public ABRR supprimerEntier(int x, ABRR abr) {
-		if (abr == null)
-			return abr;
-		if (x == abr.racine)
+	private ABRR supprimerEntier(int valeur, ABRR abr) {
+		if (abr == null) {
+			return null;
+		}
+		if (valeur == abr.racine) {
 			return supprimerArbre(abr);
-		if (x > abr.racine)
-			abr.SAG = supprimerEntier(x, abr.SAG);
-		else
-			abr.SAD = supprimerEntier(x, abr.SAD);
+		}
+		if (valeur > abr.racine) {
+			abr.SAG = supprimerEntier(valeur, abr.SAG);
+		}
+		else {
+			abr.SAD = supprimerEntier(valeur, abr.SAD);
+		}
 		return abr;
 	}
 
 	public ABRR supprimerArbre(ABRR sousArbre) {
-		if (sousArbre.SAG == null)
+		if (sousArbre.SAG == null) {
 			return sousArbre.SAD;
-		if (sousArbre.SAD == null)
+		}
+		if (sousArbre.SAD == null) {
 			return sousArbre.SAG;
-		ABRR maxSAG = sousArbre.getMaxSAG();
+		}
+		ABRR maxSAG = sousArbre.getMaxSAG(SAG);
 		sousArbre.racine = maxSAG.racine;
 		sousArbre.SAG = supprimerEntier(maxSAG.racine, sousArbre.SAG);
 		return sousArbre;
-	}
-
-	private ABRR getMaxSAG() {
-		return getMaxSAG(SAG);
 	}
 
 	private ABRR getMaxSAG(ABRR sousArbre) {
@@ -154,9 +158,44 @@ public class ABRR {
 		else
 			return null;
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+	public void rechercheEntier(ABRR arbre, int valeur){
+		if(arbre != null){
+			if(arbre.getRacine() == valeur){
+				System.out.println("L'entier à été trouvé dans l'ABRR de racine " + arbre.getRacine());
+			}
+
+			else{
+				if(arbre.getRacine()> valeur){
+					rechercheEntier(arbre.getSAG(), valeur);
+				}
+				if(arbre.getRacine()< valeur){
+					rechercheEntier(arbre.getSAD(), valeur);
+				}
+			}
+
+		}
+	}
+
+	public void insererEntier(ABRR sousArbre, int valeur) {
+		if (sousArbre.getRacine() < valeur ) {
+			if(sousArbre.getSAG() == null) {
+				sousArbre.setSAG(new ABRR(valeur));
+			} else {
+				insererEntier(sousArbre.SAG, valeur);
+			}
+		}
+		else {
+			if (sousArbre.getSAD() == null) {
+				sousArbre.setSAD(new ABRR(valeur));
+			} else {
+				insererEntier(sousArbre.SAD, valeur);
+			}
+		}
+	}
+
+
+	public static void main(String[] args) {
 	}
 
 }

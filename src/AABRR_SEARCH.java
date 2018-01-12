@@ -2,7 +2,7 @@ package src;
 
 public class AABRR_SEARCH {
 
-    public boolean rechercherABR(AABRR a, int i){
+    public boolean rechercherAABRR(AABRR a, int i){
         if(a != null){
             if(a.getMin() <= i && a.getMax() >= i){
                 System.out.println("Dans interval M m : " + a.getMin()+ " "+ a.getMax());
@@ -12,10 +12,10 @@ public class AABRR_SEARCH {
 
             else{
                 if(a.getMin() > i){
-                    return rechercherABR(a.getSAG(), i);
+                    return rechercherAABRR(a.getSAG(), i);
                 }
                 if(a.getMax() < i){
-                    return rechercherABR(a.getSAD(), i);
+                    return rechercherAABRR(a.getSAD(), i);
                 }
             }
 

@@ -1,15 +1,14 @@
+import src.AABRR;
+
 import java.util.Scanner;
 
 public class Main{
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		boolean sortie = false;
 		AABRR arbre = new AABRR(null, null, null, null);
-		while (sortie == false) {			
-			System.out.println("Bienvenue !");
+        System.out.println("Bienvenue !");
+		while (sortie == false) {
 			System.out.println("0. Affichage de l'arbre");
 			System.out.println("1. Lecture AABRR depuis fichier");
 			System.out.println("2. Créer fichier depuis AABRR");
@@ -18,8 +17,6 @@ public class Main{
 			System.out.println("5. Recherche d'un entier dans un AABRR");
 			System.out.println("6. Suppression d'un entier dans un AABRR");
 			System.out.println("7. Insertion d'un entier dans un AABRR");
-			System.out.println("8. ABR vers AABRR");
-			System.out.println("9. AABRR vers ABR");
 			System.out.println("x quitter");
 			System.out.println("Veuillez faire un choix");
 			Scanner scan = new Scanner(System.in);
@@ -61,24 +58,42 @@ public class Main{
 					arbre = arbre.GenererAABRRAleatoire(nbnoeud, max);
 					break;
 				case "4":
-					boolean verif = true;
+					boolean verif;
 					System.out.println("4. Verifier un AABRR");
 					verif = arbre.verif(arbre);
 					System.out.println(verif);
 					break;
-					
+
 				case "5":
 					System.out.println("5. Recherche d'un entier dans un AABRR");
+                    System.out.println("Entrez un entier");
+                    choice = scan.nextLine();
+                    Integer entierAChercher = Integer.parseInt(choice);
+                    boolean result = arbre.rechercheEntier(arbre, entierAChercher);
+                    if (result) {
+                        System.out.println("Entier trouvé");
+                    } else {
+                        System.out.println("L'entier n'est pas présent dans l'arbre");
+                    }
 					break;
+
 				case "6":
-					break;
+                    System.out.println("6. Suppression d'un entier dans un AABRR");
+                    System.out.println("Entrez un entier");
+                    choice = scan.nextLine();
+                    Integer entierASupprimer = Integer.parseInt(choice);
+                    arbre = arbre.supprimerEntier(entierASupprimer, arbre);
+                    break;
+
 				case "7":
-					break;
-				case "8":
-					break;
-				case "9":
-					break;
-				case "x": 
+                    System.out.println("7. Insertion d'un entier dans un AABRR");
+                    System.out.println("Entrez un entier");
+                    choice = scan.nextLine();
+                    Integer entierAInserer = Integer.parseInt(choice);
+                    arbre.insererEntier(entierAInserer, arbre);
+                    break;
+
+				case "x":
 					sortie = true;
 				default:
 					break;
