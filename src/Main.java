@@ -25,6 +25,7 @@ public class Main{
 					System.out.println("0. Affichage de l'arbre : ");
 					val = arbre.Parcours(val);
 					System.out.println(val);
+					val = "";
 					break;
 				case "1":
 					System.out.println("1. Lecture AABRR depuis fichier");
@@ -81,14 +82,15 @@ public class Main{
                     System.out.println("6. Suppression d'un entier dans un AABRR");
 					val = arbre.Parcours(val);
 					System.out.println(val);                    
-                    System.out.println("Entrez un entier");                
+                    System.out.println("Entrez un entier"); 
+                    val = "";
                     choice = scan.nextLine();
                     Integer entierASupprimer = Integer.parseInt(choice);
                     arbre = arbre.supprimerEntier(entierASupprimer, arbre);
-                    val = "";
 					val = arbre.Parcours(val);
 					System.out.println("");
 					System.out.println(val);
+					val = "";
                     break;
 
 				case "7":
@@ -96,6 +98,7 @@ public class Main{
 					val = arbre.Parcours(val);
 					System.out.println("");
 					System.out.println(val);
+					val = "";
                     System.out.println("Entrez un entier");
                     choice = scan.nextLine();
                     Integer entierAInserer = Integer.parseInt(choice);
