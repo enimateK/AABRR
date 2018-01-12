@@ -1,5 +1,3 @@
-package src;
-
 public class ABRR {
 	private Integer racine;
 	private ABRR SAG;
@@ -113,11 +111,44 @@ public class ABRR {
 		return (verif(arbre.SAG, min, max) && verif(arbre.SAD, min, max));
 	}
 
+	
+	
+	
+	public ABRR supprimerEntier(ABRR arbre, Integer valeur) {
+
+		Integer maxSAD = null;
+		if (arbre != null) {
+			if (valeur < arbre.racine) {
+				arbre.SAD = supprimerEntier(arbre.SAD, valeur);
+			}else {
+				if (valeur > arbre.racine) {
+					arbre.SAG = supprimerEntier(arbre.SAG, valeur);
+				}else {
+					if(arbre.SAD == null) {
+						System.out.println("On prend SAG");
+						arbre = arbre.SAG;
+					}else {
+						if(arbre.SAG == null) {
+							System.out.println("On prend SAD");
+							arbre = arbre.SAD;
+						}else {
+							System.out.println("On prend maxSAD");
+							maxSAD = SuppriMaxSAG(arbre.SAD, maxSAD);
+							arbre.racine = maxSAD;
+						}
+					}
+				}
+			}
+		}
+		return arbre;
+	}
+/*
 	private ABRR supprimerEntier(int valeur, ABRR abr) {
-		if (abr == null) {
+		if (abr.racine == null) {
 			return null;
 		}
 		if (valeur == abr.racine) {
+			System.out.println("Là on va supprimer l'arbre " + valeur);
 			return supprimerArbre(abr);
 		}
 		if (valeur > abr.racine) {
@@ -141,10 +172,20 @@ public class ABRR {
 		sousArbre.SAG = supprimerEntier(maxSAG.racine, sousArbre.SAG);
 		return sousArbre;
 	}
-
-	private ABRR getMaxSAG(ABRR sousArbre) {
-		return sousArbre.SAD == null ? sousArbre : getMaxSAG(sousArbre.SAD);
+*/
+	private Integer SuppriMaxSAG(ABRR sousArbre, Integer max) {
+		String val = "";
+		if (sousArbre.SAD == null) {
+				max = sousArbre.racine;			
+				sousArbre = sousArbre.SAG;
+				
+		}else {
+			SuppriMaxSAG(sousArbre.SAD, max);
+		}
+		return max;
 	}
+
+
 
 	public ABRR recherche(int value, ABRR sousArbre) {
 		if(sousArbre != null) {

@@ -1,5 +1,3 @@
-package src;
-
 public class AABRR_SEARCH {
 
     public boolean rechercherAABRR(AABRR a, int i){

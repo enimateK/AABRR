@@ -1,5 +1,3 @@
-package src;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -294,17 +292,15 @@ public class AABRR {
 		}
 	}
 
-    public AABRR supprimerEntier(int valeur, AABRR arbre) {
+    public AABRR supprimerEntier(Integer valeur, AABRR arbre) {
 		if (arbre != null && arbre.getMin() != null && arbre.getMax() != null) {
 			if(valeur >= arbre.min && valeur <= arbre.Max) {
 				if(arbre.getAA().getRacine() == valeur && arbre.getAA().getSAD() == null && arbre.getAA().getSAG() == null) {
 					arbre.AA = null;
 				}
 				else {
-					ABRR sousArbre = arbre.getAA().recherche(valeur, arbre.getAA());
-					if(sousArbre != null) {
-						sousArbre.supprimerArbre(sousArbre);
-					}
+					ABRR sousArbre = new ABRR(null);
+					arbre.AA = sousArbre.supprimerEntier(arbre.getAA(),valeur);					
 				}
 			}
 			else if (arbre.SAG != null && valeur < arbre.min) {
